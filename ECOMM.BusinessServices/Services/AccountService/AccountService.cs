@@ -35,6 +35,11 @@ namespace ECOMM.BusinessServices.Services.AccountService
             _logger = logger;
         }
 
+        /// <summary>
+        /// Login user with valid inputs
+        /// </summary>
+        /// <param name="model">Login model</param>
+        /// <returns>return token</returns>
         public async Task<Response> Login(LoginModel model)
         {
             var user = await _userManager.FindByNameAsync(model.Username);
@@ -65,6 +70,11 @@ namespace ECOMM.BusinessServices.Services.AccountService
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Register normal user
+        /// </summary>
+        /// <param name="model">register model</param>
+        /// <returns>Success response</returns>
         public async Task<Response> Register(RegisterModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
@@ -84,6 +94,11 @@ namespace ECOMM.BusinessServices.Services.AccountService
             return Success("User created successfully!");
         }
 
+        /// <summary>
+        /// Register admin user
+        /// </summary>
+        /// <param name="model">register model</param>
+        /// <returns>success response</returns>
         public async Task<Response> RegisterAdmin(RegisterModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
@@ -116,13 +131,14 @@ namespace ECOMM.BusinessServices.Services.AccountService
             return Success("User created successfully!");
         }
 
+        //Get token with public info
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration[ApplicationConstants.JWT_SECRET]));
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
+                issuer: _configuration[ApplicationConstants.JWT_VALID_IS_USER],
+                audience: _configuration[ApplicationConstants.JWT_VALID_AUDIENCE],
                 expires: DateTime.Now.AddHours(3),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

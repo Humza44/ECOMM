@@ -10,5 +10,8 @@ namespace ECOMM.Common.Constants
     {
         public const string CONNECTION_STRING = "ApplicationConnectionString";
         public const string DEFAULT_COMMAND_TIMEOUT = "DatabaseConnectionSettings:ApplicationConnectionStringCommandTimeout";
+        public const string JWT_SECRET = "JWT:Secret";
+        public const string JWT_VALID_IS_USER = "JWT:ValidIssuer";
+        public const string JWT_VALID_AUDIENCE = "JWT:ValidAudience";
     }
 }
